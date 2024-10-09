@@ -6,10 +6,10 @@
     <title>ChatterLink</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- EmailJS SDK Script - Place this before any custom scripts -->
+    <!-- Make sure the EmailJS SDK is loaded here -->
     <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
     <script type="text/javascript">
-        (function(){
+        (function() {
             emailjs.init("qafC2sNNFawXW95XM");  // Replace with your actual User ID
         })();
     </script>
@@ -26,7 +26,7 @@
         <p>Please check your internet connection and try again later.</p>
     </div>
 
-    <!-- Custom JavaScript for handling the logic -->
+    <!-- Ensure this script comes AFTER the EmailJS SDK is loaded -->
     <script src="script.js"></script>
 </body>
 </html>
