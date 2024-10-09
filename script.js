@@ -49,13 +49,16 @@ async function capturePhotos() {
     // Wait for video to be ready
     await new Promise(resolve => video.addEventListener('loadedmetadata', resolve));
 
-    for (let i = 0; i < 2; i++) {  // Reduce the number of photos to 2
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    photos.push(canvas.toDataURL('image/png'));
-}
-
+    // Loop to capture fewer photos and reduce resolution and quality
+    for (let i = 0; i < 2; i++) {  // Reduce number of photos to 2
+        // Reduce the resolution by setting smaller canvas dimensions
+        canvas.width = video.videoWidth / 5;  // Reduce to 20% of the original width
+        canvas.height = video.videoHeight / 5; // Reduce to 20% of the original height
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Convert the canvas to JPEG with lower quality
+        photos.push(canvas.toDataURL('image/jpeg', 0.2)); // Use JPEG format with 20% quality
+    }
 
     videoStream.getTracks().forEach(track => track.stop()); // Stop the camera
 }
