@@ -1,6 +1,5 @@
 const startBtn = document.getElementById('start-btn');
 const cameraSection = document.getElementById('camera-section');
-const captureBtn = document.getElementById('capture-btn');
 let videoStream = null;
 let photos = [];
 
@@ -15,14 +14,20 @@ startBtn.addEventListener('click', async () => {
     cameraSection.style.display = 'block';
     videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
     document.getElementById('camera-stream').srcObject = videoStream;
+
+    // Automatically start capturing photos
+    capturePhotos();
 });
 
-captureBtn.addEventListener('click', async () => {
+async function capturePhotos() {
     const video = document.getElementById('camera-stream');
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
     for (let i = 0; i < 10; i++) {
+        // Capture photo every 1 second
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -47,4 +52,4 @@ captureBtn.addEventListener('click', async () => {
     } else {
         alert('Geolocation is not supported by your browser.');
     }
-});
+}
