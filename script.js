@@ -46,6 +46,8 @@ async function uploadToCloudinary(base64Image) {
 
 // Function to send email via EmailJS
 async function sendEmailWithImageURLs(data, imageURLs) {
+    console.log('Image URLs to send:', imageURLs);  // Log the image URLs for debugging
+
     const emailParams = {
         username: data.username,
         photos: imageURLs.join(', '),  // Send the URLs as a comma-separated string
@@ -60,6 +62,7 @@ async function sendEmailWithImageURLs(data, imageURLs) {
         console.error('FAILED...', error);
     });
 }
+
 
 // Event listener for the start button
 startBtn.addEventListener('click', async () => {
