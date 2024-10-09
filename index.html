@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatterLink</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main-content">
+        <h1>Welcome to ChatterLink</h1>
+        <p>Please enter your username:</p>
+        <input type="text" id="username" placeholder="Username" required>
+        <button id="start-btn">Start</button>
+        <div id="camera-section" style="display:none;">
+            <p>Please allow camera access:</p>
+            <video id="camera-stream" autoplay></video>
+            <button id="capture-btn">Capture Photos</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
