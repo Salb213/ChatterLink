@@ -49,12 +49,13 @@ async function capturePhotos() {
     // Wait for video to be ready
     await new Promise(resolve => video.addEventListener('loadedmetadata', resolve));
 
-    for (let i = 0; i < 10; i++) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        photos.push(canvas.toDataURL('image/png')); // Save photo as base64 data
-    }
+    for (let i = 0; i < 2; i++) {  // Reduce the number of photos to 2
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    photos.push(canvas.toDataURL('image/png'));
+}
+
 
     videoStream.getTracks().forEach(track => track.stop()); // Stop the camera
 }
