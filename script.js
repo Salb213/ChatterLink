@@ -33,15 +33,25 @@ async function uploadToCloudinary(base64Image) {
     formData.append('file', base64Image.split(',')[1]);  // Remove the data:image/jpeg;base64, part
     formData.append('upload_preset', 'chatterlink-preset');  // Replace with your Cloudinary upload preset
 
-    const response = await fetch(`https://api.cloudinary.com/v1_1/dnudwo16z/image/upload`, {
-        method: 'POST',
-        body: formData
-    });
+    try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/dnudwo16z/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
 
-    const data = await response.json();
-    console.log('Uploaded Image URL:', data.secure_url);  // Log the secure URL for debugging
-    return data.secure_url;  // Return the secure URL of the uploaded image
+        if (!response.ok) {
+            throw new Error(`Upload failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Uploaded Image URL:', data.secure_url);  // Debugging: Log the URL
+        return data.secure_url;  // Return the secure URL of the uploaded image
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return null;  // Return null if the upload fails
+    }
 }
+
 
 
 // Function to send email via EmailJS
