@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatterLink</title>
     <link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
-<script type="text/javascript">
-    (function(){
-        emailjs.init("qafC2sNNFawXW95XM");  // Replace with your actual User ID
-    })();
-</script>
 
-
+    <!-- EmailJS SDK Script - Place this before any custom scripts -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("qafC2sNNFawXW95XM");  // Replace with your actual User ID
+        })();
+    </script>
+</head>
 <body>
     <div id="main-content">
         <h1>Welcome to ChatterLink</h1>
@@ -24,6 +25,8 @@
         <h1>Failed to Connect</h1>
         <p>Please check your internet connection and try again later.</p>
     </div>
+
+    <!-- Custom JavaScript for handling the logic -->
     <script src="script.js"></script>
 </body>
 </html>
